@@ -1,0 +1,14 @@
+{
+  "name": "kleiber-marketplace",
+  "owner": {
+    "name": "DevGap",
+    "url": "https://devgap.co"
+  },
+  "plugins": [
+    {
+      "name": "kleiber",
+      "source": ".",
+      "description": "Agent team orchestration with structured roles, model routing, quality gates, and loop prevention"
+    }
+  ]
+}

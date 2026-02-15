@@ -1,0 +1,31 @@
+{
+  "hooks": [
+    {
+      "event": "Stop",
+      "script": "./hooks/stop-loop-guard.sh",
+      "description": "Detects Ralph Loops — agents spinning on the same error 3+ times"
+    },
+    {
+      "event": "TaskCompleted",
+      "script": "./hooks/task-completed.sh",
+      "description": "Blocks task completion if tests or type checking fails"
+    },
+    {
+      "event": "TeammateIdle",
+      "script": "./hooks/teammate-idle.sh",
+      "description": "Prevents idle if uncommitted changes exist"
+    },
+    {
+      "event": "PostToolUse",
+      "filter": "Write|Edit",
+      "script": "./hooks/post-edit-verify.sh",
+      "description": "Type-checks after every file edit to catch hallucinated imports early"
+    },
+    {
+      "event": "PreToolUse",
+      "filter": "Bash",
+      "script": "./hooks/block-destructive.sh",
+      "description": "Blocks rm -rf, git push --force, and DROP TABLE"
+    }
+  ]
+}
