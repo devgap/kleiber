@@ -1,10 +1,39 @@
 # Kleiber Agent TappedOut
 <img width="1536" height="1024" alt="banner image homepage" src="https://github.com/user-attachments/assets/ddcdc145-45d7-43e5-83a0-44c669f3793b" />
 
-
 Agent team orchestration for Claude Code. Structured roles, model routing, quality gates, and loop prevention.
 
 Named after conductor Carlos Kleiber — one orchestrator, many virtuosos, flawless coordination.
+
+## Why Kleiber?
+
+Anthropic shipped native agent teams in Claude Code. Kleiber adds the opinionated layer that makes them production-ready:
+
+- **Pre-configured roles** — 5 battle-tested spawn prompts so you don't rewrite them every session
+- **Model routing** — Opus for architecture, Sonnet for implementation, Haiku for validation. Cheapest model that can reliably do the job.
+- **Quality hooks** — 5 hooks enforce tests, types, and safety at every stage of the pipeline
+- **Loop detection** — Ralph Loop Guard stops agents after 3 repeated errors
+- **Destructive command blocker** — Blocks `rm -rf`, `git push --force`, `DROP TABLE` before execution
+- **Delegate mode enforced** — Lead agent coordinates only, never implements
+
+## Prerequisites
+
+Agent teams are experimental and disabled by default. Enable them first:
+
+```json
+// Add to your Claude Code settings.json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+Or set it in your shell:
+
+```bash
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+```
 
 ## Install
 
@@ -58,6 +87,13 @@ engineer (sonnet), backend engineer (sonnet), validator (haiku), scribe (haiku).
 Use delegate mode.
 ```
 
+**Keyboard shortcuts** once your team is running:
+
+| Shortcut | Action |
+|----------|--------|
+| `Shift+Tab` | Toggle delegate mode (lead coordinates only) |
+| `Shift+Up/Down` | Switch between teammates (in-process mode) |
+
 ## Example Prompts
 
 **Full feature build:**
@@ -80,8 +116,18 @@ hypotheses. Have them challenge each other's theories.
 ## Requirements
 
 - Claude Code CLI
+- Agent teams enabled (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`)
 - jq (used by hook scripts)
 - Git
+
+## Known Limitations
+
+Agent teams are in research preview. Current constraints:
+
+- **No session resumption** — `/resume` and `/rewind` won't restore teammates. Spawn new ones.
+- **One team per session** — Teammates can't spawn their own teams.
+- **Task status can lag** — Teammates may finish without marking tasks complete. Nudge the lead.
+- **Split-pane needs tmux/iTerm2** — Not supported in VS Code terminal, Windows Terminal, or Ghostty. In-process mode works everywhere.
 
 ## Model Cost Reference
 
