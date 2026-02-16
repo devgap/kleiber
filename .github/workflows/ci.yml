@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: ShellCheck & JSON Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get install -y shellcheck jq
+
+      - name: Run shellcheck on all shell scripts
+        run: |
+          find . -name '*.sh' -type f | while read -r script; do
+            echo "Checking $script..."
+            shellcheck "$script"
+          done
+
+      - name: Validate JSON files
+        run: |
+          find . -name '*.json' -type f | while read -r json_file; do
+            echo "Validating $json_file..."
+            jq . "$json_file" > /dev/null
+          done
+
+      - name: Check shell scripts are executable
+        run: |
+          find . -name '*.sh' -type f | while read -r script; do
+            if [ ! -x "$script" ]; then
+              echo "ERROR: $script is not executable"
+              exit 1
+            fi
+          done
+
