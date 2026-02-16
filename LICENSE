@@ -1,71 +1,21 @@
----
-config:
-  layout: elk
----
-flowchart TB
- subgraph Phase1["Phase 1: Planning"]
-        C1["Breakdown Tasks 1-2hr chunks"]
-        C["Standard Workflow"]
-        C2["Identify Dependencies"]
-        F1["Spawn Architect Opus"]
-        F["Architectural Plan"]
-        F2["Design Doc Generation"]
-        F3{"Lead Approval?"}
-  end
- subgraph Phase2["Phase 2: Staffing Spawning"]
-        G["Select Agents"]
-        G1{"Role Needs?"}
-        H["Spawn Sonnet FE"]
-        I["Spawn Sonnet BE"]
-        J["Spawn Opus Architect"]
-        K["Spawn Haiku Validator/Scribe"]
-  end
- subgraph Phase3["Phase 3: Execution Loop"]
-        L["Assign Task & File Ownership"]
-        M["Agent Working..."]
-        N{"Monitoring Hooks"}
-        O["Stop & Alert Lead"]
-        P["Commit & Respawn Agent"]
-        Q["Validator Check Haiku"]
-        R["Direct Message Agent + Fix"]
-        S["Scribe Logs Haiku"]
-  end
- subgraph Phase4["Phase 4: Delivery"]
-        T["Mark Task Complete"]
-        U{"All Tasks Done?"}
-        V["Final Report & Cost Summary"]
-  end
-    A["User Input / Objective"] --> B{"Analyze Intent"}
-    B -- Feature Build --> C
-    B -- Bug Fix --> D["Investigation Swarm"]
-    B -- Code Review --> E["Review Panel"]
-    B -- New System --> F
-    C --> C1
-    C1 --> C2
-    F --> F1
-    F1 --> F2
-    F2 --> F3
-    F3 -- No --> F1
-    F3 -- Yes --> C1
-    C2 --> G
-    G --> G1
-    G1 -- Frontend --> H
-    G1 -- Backend --> I
-    G1 -- High Complexity --> J
-    G1 -- Boilerplate --> K
-    H --> L
-    I --> L
-    J --> L
-    K --> L
-    L --> M
-    M --> N
-    N -- Ralph Loop 3x Error --> O
-    N -- Context Full --> P
-    N -- Success --> Q
-    Q -- Fail --> R
-    R --> M
-    Q -- Pass --> S
-    S --> T
-    T --> U
-    U -- No --> L
-    U -- Yes --> V
+MIT License
+
+Copyright (c) 2026 DevGap
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
