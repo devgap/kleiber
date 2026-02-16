@@ -134,3 +134,39 @@ If you or a teammate hits the same error 3+ times or retries the same approach 4
 - Keep task descriptions concise — teammates don't need the full project history
 - When a teammate's context is getting large, have them commit and summarize before continuing
 - Prefer many small focused tasks over fewer large ones
+
+## Error Recovery
+
+When things go wrong, follow these escalation steps:
+
+### Teammate Fails a Task
+1. Check the error output — is it a code bug, a missing dependency, or a wrong assumption?
+2. If code bug: message the teammate with the specific error and file location. Let them fix it.
+3. If missing dependency: install it and message the teammate to retry.
+4. If wrong assumption: message the Architect to clarify the design, then redirect the teammate.
+
+### Teammate Enters a Loop
+The `stop-loop-guard` hook will detect this automatically. When triggered:
+1. Review the repeated errors in the hook output
+2. Determine if the teammate needs a different approach or if the task should be reassigned
+3. Message the teammate with a new strategy, or reassign the task to a different teammate
+4. If the same error persists across teammates, escalate to the Architect
+
+### Tests Fail After Implementation
+1. Have Validator run the full suite and identify which tests broke
+2. Determine if the failure is in the new code or a regression in existing code
+3. Assign the fix to the responsible Engineer — do not fix it yourself (delegate mode)
+4. Re-run Validator after the fix to confirm
+
+### Merge Conflicts Between Teammates
+1. Stop both teammates immediately
+2. Identify which teammate's changes should take priority
+3. Have one teammate rebase or merge manually
+4. Re-run Validator on the merged result
+5. Prevent future conflicts by enforcing stricter file ownership in spawn prompts
+
+### Context Window Exhaustion
+1. Have the teammate commit all current work with a descriptive message
+2. Have Scribe summarize the teammate's progress and decisions
+3. Spawn a fresh teammate with the same role and the Scribe's summary as context
+4. The new teammate picks up where the old one left off

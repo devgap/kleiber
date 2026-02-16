@@ -7,6 +7,7 @@
   "plugins": [
     {
       "name": "kleiber",
+      "version": "1.0.0",
       "source": ".",
       "description": "Agent team orchestration with structured roles, model routing, quality gates, and loop prevention"
     }

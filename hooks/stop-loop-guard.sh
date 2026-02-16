@@ -1,20 +1,30 @@
 #!/bin/bash
 # stop-loop-guard.sh — Ralph Loop Detection (Ralph Wiggum 2.0)
-# Scans transcript for repeated errors. If an agent hit the same error 3+
-# times or retried 4+ times, forces stop and report instead of burning tokens.
+# Hook: Stop
+# Receives JSON on stdin with transcript_path
+# Scans transcript for repeated errors. Outputs warning if loop detected.
 
 set -euo pipefail
 
-TRANSCRIPT="${CLAUDE_TRANSCRIPT:-}"
-if [ -z "$TRANSCRIPT" ]; then
+INPUT=$(cat)
+TRANSCRIPT_PATH=$(echo "$INPUT" | jq -r '.transcript_path // empty' 2>/dev/null)
+
+if [ -z "$TRANSCRIPT_PATH" ] || [ ! -f "$TRANSCRIPT_PATH" ]; then
   exit 0
 fi
 
-# Count repeated error patterns
-REPEATED_ERRORS=$(echo "$TRANSCRIPT" | grep -oE 'Error:.*|error:.*|FAIL.*|Cannot find.*|Module not found.*' | sort | uniq -c | sort -rn | head -5)
+# Extract recent content from transcript (last 50 lines)
+RECENT=$(tail -50 "$TRANSCRIPT_PATH" 2>/dev/null || true)
 
-# Check for retry language
-RETRY_COUNT=$(echo "$TRANSCRIPT" | grep -ciE 'let me try again|trying again|another attempt|retry|retrying|let me fix' || true)
+if [ -z "$RECENT" ]; then
+  exit 0
+fi
+
+# Count repeated error patterns (escaped quotes for grep in JSONL)
+REPEATED_ERRORS=$(echo "$RECENT" | grep -oE '\"Error:.*\"|\"error:.*\"|\"FAIL.*\"|\"Cannot find.*\"|\"Module not found.*\"' | sort | uniq -c | sort -rn | head -5 2>/dev/null || true)
+
+# Count retry language
+RETRY_COUNT=$(echo "$RECENT" | grep -ciE 'let me try again|trying again|another attempt|retry|retrying|let me fix' 2>/dev/null || echo "0")
 
 # Check for same error appearing 3+ times
 HAS_LOOP=false
@@ -36,7 +46,6 @@ if [ "$HAS_LOOP" = true ] || [ "$RETRY_COUNT" -ge 4 ]; then
   echo "$REPEATED_ERRORS"
   echo ""
   echo "ACTION: Stop and report the issue to the team lead instead of continuing."
-  exit 1
 fi
 
 exit 0

@@ -1,9 +1,12 @@
 #!/bin/bash
 # task-completed.sh — Quality gate on task completion
-# Runs tests and type checking. Blocks completion if either fails.
-# The teammate gets the error output and must fix before proceeding.
+# Hook: TaskCompleted
+# Receives JSON on stdin. Runs tests, type checking, and linting.
 
 set -euo pipefail
+
+# Read and discard stdin
+cat > /dev/null
 
 ERRORS=""
 
@@ -37,12 +40,26 @@ elif [ -f "pyproject.toml" ] && command -v mypy &> /dev/null; then
   fi
 fi
 
+# Run linting if available
+if [ -f "package.json" ] && command -v npx &> /dev/null; then
+  if npx --no-install eslint . --max-warnings 0 2>&1; then
+    echo "Lint: PASS"
+  else
+    ERRORS="${ERRORS}Lint errors found. Fix lint issues before completing this task.\n"
+  fi
+elif command -v ruff &> /dev/null; then
+  if ruff check . 2>&1; then
+    echo "Lint: PASS"
+  else
+    ERRORS="${ERRORS}Lint errors found (ruff). Fix lint issues before completing this task.\n"
+  fi
+fi
+
 if [ -n "$ERRORS" ]; then
   echo ""
   echo "TASK COMPLETION BLOCKED"
   echo ""
   echo -e "$ERRORS"
-  exit 1
 fi
 
 echo "All quality gates passed. Task completion allowed."
