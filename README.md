@@ -1,5 +1,6 @@
 # Kleiber Agent TappedOut
-![image](https://github.com/user-attachments/assets/6e6aa56f-e08e-4000-85eb-4db342b58a47)
+<img width="1536" height="1024" alt="banner image homepage" src="https://github.com/user-attachments/assets/ddcdc145-45d7-43e5-83a0-44c669f3793b" />
+
 
 Agent team orchestration for Claude Code. Structured roles, model routing, quality gates, and loop prevention.
 
