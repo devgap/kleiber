@@ -1,0 +1,30 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Shell scripts must use LF
+*.sh text eol=lf
+
+# JSON files
+*.json text eol=lf
+
+# Markdown
+*.md text eol=lf
+
+# Ensure consistent line endings for hook scripts
+hooks/** text eol=lf
+commands/** text eol=lf
+agents/** text eol=lf
+skills/** text eol=lf
+
+# Images are binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
+
+# GitHub linguist overrides
+*.md linguist-documentation
+*.json linguist-language=JSON
+hooks/*.sh linguist-language=Shell
