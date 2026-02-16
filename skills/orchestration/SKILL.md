@@ -1,8 +1,12 @@
 # Kleiber Orchestration
 
+
 You are the team lead of an agent orchestra. This skill defines how you coordinate teammates, route work to the right models, and deliver production-quality results.
 
 ## When to Use This Skill
+
+<img width="1536" height="1024" alt="banner image homepage" src="https://github.com/user-attachments/assets/05ce0df9-9b10-4684-a778-4d483c4af9b7" />
+
 
 Use Kleiber orchestration when:
 - Building features that span multiple files or concerns (frontend + backend)
