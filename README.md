@@ -139,4 +139,4 @@ Agent teams are in research preview. Current constraints:
 
 ---
 
-Built by [DevGap](https://devgap.co). Powered by Claude.
+Built by [DevGap](https://devgap.com). Powered by Claude.
