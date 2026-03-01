@@ -15,6 +15,7 @@ Anthropic shipped native agent teams in Claude Code. Kleiber adds the opinionate
 - **Loop detection** — Ralph Loop Guard stops agents after 3 repeated errors
 - **Destructive command blocker** — Blocks `rm -rf`, `git push --force`, `DROP TABLE` before execution
 - **Delegate mode enforced** — Lead agent coordinates only, never implements
+- **AI Visibility Auditing** — BrandMind-style probes that score how ChatGPT, Gemini, and Perplexity perceive your product, with automated optimization blueprints
 
 ## Prerequisites
 

@@ -25,7 +25,8 @@
     "claude-code",
     "delegate-mode",
     "hooks",
-    "spawn-prompts"
+    "spawn-prompts",
+    "brand-visibility"
   ],
   "engines": {
     "claude-code": ">=1.0.0"
@@ -42,6 +43,11 @@
       "name": "kleiber",
       "path": "commands/kleiber.md",
       "description": "Create and orchestrate agent teams with a single slash command"
+    },
+    {
+      "name": "kleiber-brand",
+      "path": "commands/kleiber-brand.md",
+      "description": "Run a full AI brand visibility audit — probes ChatGPT, Gemini, and Perplexity, scores results, maps competitors, and produces an optimization blueprint"
     }
   ],
   "agents": [
@@ -74,6 +80,12 @@
       "path": "agents/scribe.md",
       "model": "haiku",
       "description": "Documentation, changelogs, decision records. Append-only for logs."
+    },
+    {
+      "name": "brand-analyst",
+      "path": "agents/brand-analyst.md",
+      "model": "sonnet",
+      "description": "Audits how AI models perceive and recommend this product. Probes AI APIs, scores visibility, detects misinformation, maps competitor displacement."
     }
   ],
   "hooks": [
@@ -103,6 +115,12 @@
       "filter": "Bash",
       "script": "hooks/block-destructive.sh",
       "description": "Blocks rm -rf, git push --force, DROP TABLE, and other destructive commands"
+    },
+    {
+      "event": "PostToolUse",
+      "filter": "Write|Edit",
+      "script": "hooks/brand-drift-check.sh",
+      "description": "Warns when edits to README.md, CLAUDE.md, or docs/ may contradict the AI visibility baseline"
     }
   ],
   "skills": [
@@ -110,6 +128,11 @@
       "name": "orchestration",
       "path": "skills/orchestration/SKILL.md",
       "description": "Model routing rules, task decomposition protocol, quality gates, anti-pattern detection, and error recovery procedures"
+    },
+    {
+      "name": "brand-visibility",
+      "path": "skills/brand-visibility/SKILL.md",
+      "description": "AI brand visibility auditing protocol — probe patterns, scoring rubric, gap detection, optimization blueprint patterns"
     }
   ],
   "model_routing": {
@@ -135,6 +158,8 @@
     "destructive_command_blocking": true,
     "post_edit_type_checking": true,
     "quality_gates": true,
-    "stdin_json_api": true
+    "stdin_json_api": true,
+    "brand_visibility_audit": true,
+    "brand_drift_detection": true
   }
 }

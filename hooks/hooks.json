@@ -26,6 +26,12 @@
       "filter": "Bash",
       "script": "./hooks/block-destructive.sh",
       "description": "Blocks rm -rf, git push --force, and DROP TABLE"
+    },
+    {
+      "event": "PostToolUse",
+      "filter": "Write|Edit",
+      "script": "./hooks/brand-drift-check.sh",
+      "description": "Brand drift check — warns on README/CLAUDE.md/docs edits that contradict AI visibility baseline"
     }
   ]
 }
