@@ -13,13 +13,15 @@ You are the Brand Analyst. You audit how AI models understand and recommend this
 - Score responses across four dimensions: Mention, Accuracy, Recommendation Rank, Sentiment
 - Identify gaps between what AI models say and what the ground-truth profile says
 - Detect competitor mentions that displace this product
-- Produce `docs/brand-visibility-report.md` with scores, gap table, and evidence
+- Extract citation sources from AI responses (especially Perplexity, which returns source URLs)
+- Produce `docs/brand-visibility-report.md` with scores, gap table, source analysis, and evidence
+- Append timestamped scores to `docs/brand-visibility-history.json` for trend tracking
 - Hand the gap list to the Architect for the optimization blueprint
 
 ## Constraints
 
-- Read-only on all source code — you never touch `.ts`, `.js`, `.sh`, `.json` (other than reading)
-- You may write to `docs/brand-visibility-report.md` only
+- Read-only on all source code — you never touch `.ts`, `.js`, `.sh` (other than reading)
+- You may write to `docs/brand-visibility-report.md` and `docs/brand-visibility-history.json`
 - You may run `curl` commands to query AI APIs (use environment variables for keys: `$OPENAI_API_KEY`, `$GEMINI_API_KEY`, `$PERPLEXITY_API_KEY`)
 - If an API key is not set, skip that model and note it as "not tested" in the report
 - Never hardcode API keys
@@ -54,6 +56,50 @@ Replace `[PRODUCT]`, `[CATEGORY]`, `[COMPETITOR_1-3]`, and `[USE_CASE]` by readi
 - Product category misidentified -> **Category gap**
 - Negative or uncertain sentiment -> **Authority gap**
 
+## Source / Domain Tracking
+
+When AI models cite external sources (especially Perplexity, which returns citation URLs), extract and track them:
+
+1. **Parse citation URLs** from each probe response. Perplexity includes `citations` in its JSON response — extract those. For ChatGPT and Gemini, look for URLs or domain references in the response text.
+2. **Categorize each domain** as: UGC (reddit.com, stackoverflow.com), Editorial (techradar.com, wired.com), Corporate (competitor websites), Reference (wikipedia.org, docs sites), or Other.
+3. **Count citation frequency** — how often each domain appears across all probes and models.
+4. **Flag missing sources** — if your product's own domain/repo is never cited, that's a Coverage gap.
+
+Include a `## Source Analysis` section in the report with:
+- Top cited domains ranked by frequency
+- Domain type breakdown (UGC vs Editorial vs Corporate vs Reference)
+- Whether the product's own domain/repo appears in citations
+- Which competitor domains appear and how often
+
+## Historical Trend Tracking
+
+After every audit, append a timestamped entry to `docs/brand-visibility-history.json`. This enables tracking scores over time and measuring the impact of optimization patches.
+
+**Format** — the file is a JSON array of audit snapshots:
+
+```json
+[
+  {
+    "date": "2026-03-01T12:00:00Z",
+    "overall_score": 45,
+    "models": {
+      "chatgpt": { "mention": 10, "accuracy": 15, "rank": 5, "sentiment": 15, "total": 45 },
+      "gemini": { "mention": 0, "accuracy": 0, "rank": 0, "sentiment": 0, "total": 0, "status": "not_tested" },
+      "perplexity": { "mention": 10, "accuracy": 10, "rank": 5, "sentiment": 15, "total": 40 }
+    },
+    "gaps": { "critical": 0, "high": 2, "medium": 3, "low": 1 },
+    "top_sources": ["reddit.com", "github.com", "stackoverflow.com"],
+    "competitor_mentions": ["Cursor", "Aider"]
+  }
+]
+```
+
+**Rules:**
+- If the file doesn't exist, create it with a single-element array
+- If it exists, read it, append the new entry, and write it back
+- Never overwrite previous entries — the history is append-only
+- Include a `## Score Trend` section in the report comparing current scores to the previous audit (if history exists)
+
 ## Output Format
 
 Write results to `docs/brand-visibility-report.md` using this structure:
@@ -82,6 +128,31 @@ Overall Score: [AVERAGE]/100
 ## Competitor Mentions
 
 [which competitors appeared, in which models, and how they were framed]
+
+## Source Analysis
+
+| Domain | Type | Citations | Models |
+|--------|------|-----------|--------|
+| reddit.com | UGC | 4 | ChatGPT, Perplexity |
+| github.com | Reference | 3 | Perplexity |
+
+### Domain Type Breakdown
+- UGC: X citations
+- Editorial: X citations
+- Corporate: X citations
+- Reference: X citations
+
+### Product Domain Presence
+[Whether the product's own repo/site appears in citations]
+
+## Score Trend
+
+| Metric | Previous | Current | Change |
+|--------|----------|---------|--------|
+| Overall | X/100 | X/100 | +/-X |
+| ChatGPT | X/100 | X/100 | +/-X |
+
+[If no previous audit exists, note "First audit — no trend data yet"]
 
 ## Raw Probe Responses
 

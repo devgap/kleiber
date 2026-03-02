@@ -19,7 +19,9 @@ Probe AI models        → Send 5 structured prompts per model via API
 Score responses        → Apply 4-dimension rubric (Mention/Accuracy/Rank/Sentiment)
 Detect gaps            → Compare AI responses to ground truth
 Map competitors        → Note which competitors appear and how
+Track sources          → Extract citation domains from AI responses
 Produce report         → Write docs/brand-visibility-report.md
+Record history         → Append scores to docs/brand-visibility-history.json
 Generate blueprint     → Architect turns gaps into specific doc changes
 Apply fixes            → Scribe updates README.md / CLAUDE.md / docs/
 Re-audit               → Run again to confirm score improvement
@@ -98,6 +100,81 @@ The Architect uses gap findings to produce specific content fixes. Common patter
 **For Category gaps** — Add schema markup or a `<meta>` description if there's a website. In README.md, state the category explicitly in the first sentence.
 
 **For Authority gaps** — Add social proof: star counts, usage examples, and named users to README.md.
+
+## Source / Domain Tracking
+
+AI models don't generate answers in a vacuum — they draw on training data from specific domains. Tracking which domains AI models cite when discussing your product reveals where your brand signal is strongest and where it's missing.
+
+### How to Extract Sources
+
+**Perplexity** returns structured citations in its API response. Parse the `citations` array:
+
+```bash
+curl -s https://api.perplexity.ai/chat/completions \
+  -H "Authorization: Bearer $PERPLEXITY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{\"model\":\"llama-3.1-sonar-large-128k-online\",\"messages\":[{\"role\":\"user\",\"content\":\"$PROBE\"}]}" \
+  | jq -r '.citations[]'
+```
+
+**ChatGPT and Gemini** don't return structured citations, but often mention domains or URLs in their response text. Parse these with regex or grep for common URL patterns.
+
+### Domain Categories
+
+| Type | Examples | Significance |
+|------|----------|-------------|
+| UGC | reddit.com, stackoverflow.com, hackernews | Community signal — high influence on AI training |
+| Editorial | techradar.com, wired.com, theverge.com | Authority signal — shapes AI framing |
+| Corporate | competitor websites, your own site | Direct brand signal |
+| Reference | wikipedia.org, docs.*, github.com | Factual grounding |
+| Other | blogs, forums, niche sites | Long-tail influence |
+
+### What to Look For
+
+- **Your domain missing** = AI models aren't drawing from your content. Fix: improve SEO, publish more on high-signal platforms.
+- **Competitor domains dominating** = competitors have stronger content presence. Fix: publish authoritative content on the same platforms.
+- **UGC-heavy citations** = community perception drives AI answers. Fix: engage in community discussions, ensure accurate community content.
+- **Editorial citations** = media coverage shapes AI framing. Fix: pursue coverage that uses your preferred positioning.
+
+## Historical Trend Tracking
+
+Every audit appends a timestamped snapshot to `docs/brand-visibility-history.json`. This creates a time series that shows whether optimization patches are working.
+
+### History File Format
+
+```json
+[
+  {
+    "date": "2026-03-01T12:00:00Z",
+    "overall_score": 45,
+    "models": {
+      "chatgpt": { "mention": 10, "accuracy": 15, "rank": 5, "sentiment": 15, "total": 45 },
+      "gemini": { "status": "not_tested" },
+      "perplexity": { "mention": 10, "accuracy": 10, "rank": 5, "sentiment": 15, "total": 40 }
+    },
+    "gaps": { "critical": 0, "high": 2, "medium": 3, "low": 1 },
+    "top_sources": ["reddit.com", "github.com", "stackoverflow.com"],
+    "competitor_mentions": ["Cursor", "Aider"]
+  }
+]
+```
+
+### Trend Analysis
+
+When previous audit data exists, the report should include a Score Trend section comparing:
+
+- Overall score delta (improving, declining, or flat)
+- Per-model score changes
+- Gap count changes (are gaps being closed?)
+- New competitor mentions (emerging threats)
+- Source domain shifts (which domains are gaining/losing influence)
+
+### When to Re-audit
+
+- After applying optimization patches (measure impact)
+- After every major release (new features may change AI perception)
+- Monthly at minimum (AI models update their training data)
+- After competitor launches (check for displacement)
 
 ## Drift Prevention
 

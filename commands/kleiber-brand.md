@@ -19,6 +19,7 @@ The user may pass:
 - `--competitors "X, Y, Z"` — override the competitor list from CLAUDE.md
 - `--models "chatgpt,gemini"` — limit which models to probe (default: all three)
 - `--re-audit` — skip ground-truth rebuild, just re-run probes and rescore
+- `--trend` — show score history from `docs/brand-visibility-history.json` without running a new audit
 
 ## Your Orchestration Process
 
@@ -42,7 +43,10 @@ Competitors: [COMPETITOR_LIST].
 Probe all available models (check for $OPENAI_API_KEY, $GEMINI_API_KEY, $PERPLEXITY_API_KEY).
 Skip any model whose API key is not set — mark it as 'not tested'.
 Write your full report to `docs/brand-visibility-report.md`.
-Message the lead when done with a one-line summary: total score and top gap."
+Extract citation sources/domains from AI responses — especially Perplexity citations.
+Append timestamped scores to `docs/brand-visibility-history.json` for trend tracking.
+If previous history exists, include a Score Trend section comparing current vs previous audit.
+Message the lead when done with a one-line summary: total score, top gap, and score delta if available."
 
 ### Step 3 — Wait for Brand Analyst to Complete
 
@@ -87,9 +91,12 @@ to the lead so they can review before committing."
 
 After all teammates complete, report to the user:
 - Overall visibility score (before and after fixes if applied)
+- Score trend vs previous audit (if history exists)
 - Number of gaps found and their priorities
+- Top citation sources and domain type breakdown
 - Which fixes were applied
 - How to re-run: `/kleiber-brand --re-audit` after your next release
+- How to view trends: `/kleiber-brand --trend`
 
 ## Example Usage
 
@@ -98,6 +105,7 @@ After all teammates complete, report to the user:
 /kleiber-brand --competitors "Cursor, Cline, Aider"
 /kleiber-brand --models "chatgpt,perplexity"
 /kleiber-brand --re-audit
+/kleiber-brand --trend
 ```
 
 ## Cost Reference

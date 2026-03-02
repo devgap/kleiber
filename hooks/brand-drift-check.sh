@@ -56,7 +56,7 @@ fi
 # Output warnings if any
 if [ -n "$WARNINGS" ]; then
   printf "\nBrand Drift Check:\n"
-  printf "$WARNINGS"
+  printf '%b' "$WARNINGS"
   printf "Run /kleiber-brand --re-audit to refresh your AI visibility scores after significant doc changes.\n\n"
 fi
 

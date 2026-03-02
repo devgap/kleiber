@@ -130,8 +130,10 @@ Kleiber includes BrandMind-style AI visibility auditing that measures how ChatGP
 1. **Brand Analyst** probes each AI model with 5 structured prompts (identity, category, weakness, competitor, recommendation)
 2. Scores responses across 4 dimensions: Mention (0-25), Accuracy (0-25), Recommendation Rank (0-25), Sentiment (0-25)
 3. Detects gaps — displacement, accuracy, coverage, category, and authority
-4. **Brand Architect** generates an optimization blueprint with specific content patches
-5. **Brand drift hook** warns in real-time when doc edits contradict your visibility baseline
+4. **Source tracking** — extracts citation domains from AI responses (especially Perplexity), categorizes them (UGC, Editorial, Corporate, Reference), and flags missing brand presence
+5. **Historical trends** — appends scores to `docs/brand-visibility-history.json` after every audit so you can track improvement over time
+6. **Brand Architect** generates an optimization blueprint with specific content patches
+7. **Brand drift hook** warns in real-time when doc edits contradict your visibility baseline
 
 **Setup:**
 
@@ -149,10 +151,12 @@ export PERPLEXITY_API_KEY=pplx-...
 /kleiber-brand --competitors "Cursor, Cline, Aider"
 /kleiber-brand --models "chatgpt,perplexity"
 /kleiber-brand --re-audit
+/kleiber-brand --trend
 ```
 
 **Output:**
-- `docs/brand-visibility-report.md` — scores, gap table, raw probe responses, and optimization blueprint
+- `docs/brand-visibility-report.md` — scores, gap table, source analysis, raw probe responses, and optimization blueprint
+- `docs/brand-visibility-history.json` — append-only score history for trend tracking
 - `docs/brand-identity-template.md` — template for adding a Brand Identity block to your `CLAUDE.md`
 
 The `## Brand Identity` section in `CLAUDE.md` serves as the ground truth that probe responses are scored against. See `docs/brand-identity-template.md` for the format.
