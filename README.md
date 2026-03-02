@@ -9,9 +9,9 @@ Named after conductor Carlos Kleiber — one orchestrator, many virtuosos, flawl
 
 Anthropic shipped native agent teams in Claude Code. Kleiber adds the opinionated layer that makes them production-ready:
 
-- **Pre-configured roles** — 5 battle-tested spawn prompts so you don't rewrite them every session
+- **Pre-configured roles** — 7 agent roles with battle-tested spawn prompts so you don't rewrite them every session
 - **Model routing** — Opus for architecture, Sonnet for implementation, Haiku for validation. Cheapest model that can reliably do the job.
-- **Quality hooks** — 5 hooks enforce tests, types, and safety at every stage of the pipeline
+- **Quality hooks** — 6 hooks enforce tests, types, safety, and brand consistency at every stage of the pipeline
 - **Loop detection** — Ralph Loop Guard stops agents after 3 repeated errors
 - **Destructive command blocker** — Blocks `rm -rf`, `git push --force`, `DROP TABLE` before execution
 - **Delegate mode enforced** — Lead agent coordinates only, never implements
@@ -48,9 +48,11 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 
 ## What You Get
 
-**Slash command**: `/kleiber` — creates and orchestrates agent teams with a single command.
+**Slash commands**:
+- `/kleiber` — creates and orchestrates agent teams with a single command
+- `/kleiber-brand` — runs a full AI brand visibility audit
 
-**5 agent roles** with pre-configured spawn prompts and model routing:
+**7 agent roles** with pre-configured spawn prompts and model routing:
 
 | Role | Model | Purpose |
 |------|-------|---------|
@@ -59,8 +61,10 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 | Engineer-Backend | Sonnet | Routes, queries, business logic, integration tests |
 | Validator | Haiku | Runs tests, types, lint. Read-only. |
 | Scribe | Haiku | Docs, changelog, decision records |
+| Brand Analyst | Sonnet | Probes AI models, scores visibility, detects misinformation |
+| Brand Architect | Sonnet | Reads visibility gaps, produces optimization blueprint |
 
-**5 hooks** enforcing quality at every stage:
+**6 hooks** enforcing quality at every stage:
 
 | Hook | Trigger | What It Does |
 |------|---------|--------------|
@@ -69,8 +73,11 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 | teammate-idle | TeammateIdle | Prevents idle if uncommitted changes exist |
 | post-edit-verify | PostToolUse (Write/Edit) | Type-checks after every file edit |
 | block-destructive | PreToolUse (Bash) | Blocks rm -rf, force push, DROP TABLE |
+| brand-drift-check | PostToolUse (Write/Edit) | Warns when doc edits contradict AI visibility baseline |
 
-**Orchestration skill** with model routing rules, task decomposition protocol, quality gates, and anti-pattern detection.
+**2 skills**:
+- **Orchestration** — model routing rules, task decomposition protocol, quality gates, and anti-pattern detection
+- **Brand Visibility** — AI probe patterns, scoring rubric, gap detection, and optimization blueprint patterns
 
 ## Usage
 
@@ -113,6 +120,42 @@ test coverage. Have them report independently.
 Users report [symptom]. Create a team with 4 teammates investigating competing
 hypotheses. Have them challenge each other's theories.
 ```
+
+## AI Visibility Auditing
+
+Kleiber includes BrandMind-style AI visibility auditing that measures how ChatGPT, Gemini, and Perplexity perceive and recommend your product.
+
+**What it does:**
+
+1. **Brand Analyst** probes each AI model with 5 structured prompts (identity, category, weakness, competitor, recommendation)
+2. Scores responses across 4 dimensions: Mention (0-25), Accuracy (0-25), Recommendation Rank (0-25), Sentiment (0-25)
+3. Detects gaps — displacement, accuracy, coverage, category, and authority
+4. **Brand Architect** generates an optimization blueprint with specific content patches
+5. **Brand drift hook** warns in real-time when doc edits contradict your visibility baseline
+
+**Setup:**
+
+```bash
+# Set one or more API keys (missing keys are skipped gracefully)
+export OPENAI_API_KEY=sk-...
+export GEMINI_API_KEY=...
+export PERPLEXITY_API_KEY=pplx-...
+```
+
+**Run an audit:**
+
+```
+/kleiber-brand
+/kleiber-brand --competitors "Cursor, Cline, Aider"
+/kleiber-brand --models "chatgpt,perplexity"
+/kleiber-brand --re-audit
+```
+
+**Output:**
+- `docs/brand-visibility-report.md` — scores, gap table, raw probe responses, and optimization blueprint
+- `docs/brand-identity-template.md` — template for adding a Brand Identity block to your `CLAUDE.md`
+
+The `## Brand Identity` section in `CLAUDE.md` serves as the ground truth that probe responses are scored against. See `docs/brand-identity-template.md` for the format.
 
 ## Requirements
 
