@@ -5,7 +5,8 @@ This file is the main source of truth for Claude Code when working on this repos
 ## Project Overview
 
 Kleiber is a Claude Code plugin for opinionated agent team orchestration.
-Shell-based. Plugin format: `.claude-plugin/plugin.json`.
+Shell-based. Plugin format: `.claude-plugin/plugin.json` (v1.1.0 — official schema with directory paths).
+Website: https://kleiber-site.vercel.app
 
 ## Repository Structure
 

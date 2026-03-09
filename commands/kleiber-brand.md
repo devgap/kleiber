@@ -1,4 +1,5 @@
 ---
+name: kleiber-brand
 description: Run a full AI brand visibility audit. Probes how ChatGPT, Gemini, and Perplexity describe and recommend this product, scores results, maps competitor displacement, and produces an optimization blueprint.
 ---
 

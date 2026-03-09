@@ -5,6 +5,8 @@ Agent team orchestration for Claude Code. Structured roles, model routing, quali
 
 Named after conductor Carlos Kleiber — one orchestrator, many virtuosos, flawless coordination.
 
+**Website:** [kleiber-site.vercel.app](https://kleiber-site.vercel.app) | **By:** [DevGap](https://devgap.uk) | [AI Plumber](https://ai-plumber-site.vercel.app)
+
 ## Why Kleiber?
 
 Anthropic shipped native agent teams in Claude Code. Kleiber adds the opinionated layer that makes them production-ready:
@@ -187,4 +189,6 @@ Agent teams are in research preview. Current constraints:
 
 ---
 
-Built by [DevGap](https://devgap.com). Powered by Claude.
+Built by [DevGap](https://devgap.uk). Powered by Claude.
+
+Part of the [AI Plumber](https://ai-plumber-site.vercel.app) governance-first framework by Koen Van Lysebetten.

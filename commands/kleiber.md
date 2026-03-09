@@ -1,4 +1,5 @@
 ---
+name: kleiber
 description: Create and orchestrate an agent team using Kleiber roles and model routing
 ---
 

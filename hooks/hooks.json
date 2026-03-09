@@ -1,37 +1,69 @@
 {
-  "hooks": [
-    {
-      "event": "Stop",
-      "script": "./hooks/stop-loop-guard.sh",
-      "description": "Detects Ralph Loops — agents spinning on the same error 3+ times"
-    },
-    {
-      "event": "TaskCompleted",
-      "script": "./hooks/task-completed.sh",
-      "description": "Blocks task completion if tests or type checking fails"
-    },
-    {
-      "event": "TeammateIdle",
-      "script": "./hooks/teammate-idle.sh",
-      "description": "Prevents idle if uncommitted changes exist"
-    },
-    {
-      "event": "PostToolUse",
-      "filter": "Write|Edit",
-      "script": "./hooks/post-edit-verify.sh",
-      "description": "Type-checks after every file edit to catch hallucinated imports early"
-    },
-    {
-      "event": "PreToolUse",
-      "filter": "Bash",
-      "script": "./hooks/block-destructive.sh",
-      "description": "Blocks rm -rf, git push --force, and DROP TABLE"
-    },
-    {
-      "event": "PostToolUse",
-      "filter": "Write|Edit",
-      "script": "./hooks/brand-drift-check.sh",
-      "description": "Brand drift check — warns on README/CLAUDE.md/docs edits that contradict AI visibility baseline"
-    }
-  ]
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/stop-loop-guard.sh",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/task-completed.sh",
+            "timeout": 30000
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/teammate-idle.sh",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/post-edit-verify.sh",
+            "timeout": 15000
+          },
+          {
+            "type": "command",
+            "command": "./hooks/brand-drift-check.sh",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/block-destructive.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,20 +1,14 @@
 {
   "name": "kleiber",
-  "description": "Production-ready agent team orchestration for Claude Code. Spawns specialized AI teammates (Architect, Frontend/Backend Engineers, Validator, Scribe) with model routing (Opus/Sonnet/Haiku), enforces quality gates via 5 lifecycle hooks, prevents infinite loops, and blocks destructive commands. One orchestrator, many virtuosos, flawless coordination.",
-  "version": "1.0.0",
-  "license": "MIT",
+  "version": "1.1.0",
+  "description": "Production-ready agent team orchestration for Claude Code. Spawns specialized AI teammates (Architect, Frontend/Backend Engineers, Validator, Scribe) with model routing guidance (Opus/Sonnet/Haiku), quality gates via lifecycle hooks, loop prevention, and destructive command blocking. One orchestrator, many virtuosos, flawless coordination.",
   "author": {
     "name": "DevGap",
     "url": "https://devgap.uk"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/devgap/kleiber"
-  },
-  "bugs": {
-    "url": "https://github.com/devgap/kleiber/issues"
-  },
-  "homepage": "https://github.com/devgap/kleiber#readme",
+  "repository": "https://github.com/devgap/kleiber",
+  "homepage": "https://kleiber-site.vercel.app",
+  "license": "MIT",
   "keywords": [
     "orchestration",
     "agent-teams",
@@ -25,141 +19,13 @@
     "claude-code",
     "delegate-mode",
     "hooks",
-    "spawn-prompts",
-    "brand-visibility"
+    "spawn-prompts"
   ],
-  "engines": {
-    "claude-code": ">=1.0.0"
-  },
-  "requirements": {
-    "env": {
-      "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-    },
-    "binaries": ["jq", "git"],
-    "optional_binaries": ["shellcheck", "tsc", "npx", "eslint", "ruff"]
-  },
   "commands": [
-    {
-      "name": "kleiber",
-      "path": "commands/kleiber.md",
-      "description": "Create and orchestrate agent teams with a single slash command"
-    },
-    {
-      "name": "kleiber-brand",
-      "path": "commands/kleiber-brand.md",
-      "description": "Run a full AI brand visibility audit — probes ChatGPT, Gemini, and Perplexity, scores results, maps competitors, and produces an optimization blueprint"
-    }
+    "commands/kleiber.md",
+    "commands/kleiber-brand.md"
   ],
-  "agents": [
-    {
-      "name": "architect",
-      "path": "agents/architect.md",
-      "model": "opus",
-      "description": "System design, API specs, architecture reviews. Read-only on source code."
-    },
-    {
-      "name": "engineer-frontend",
-      "path": "agents/engineer-frontend.md",
-      "model": "sonnet",
-      "description": "UI components, state management, accessibility, component tests."
-    },
-    {
-      "name": "engineer-backend",
-      "path": "agents/engineer-backend.md",
-      "model": "sonnet",
-      "description": "Routes, middleware, business logic, database queries, integration tests."
-    },
-    {
-      "name": "validator",
-      "path": "agents/validator.md",
-      "model": "haiku",
-      "description": "Runs tests, type checks, lint. Read-only. Produces pass/fail reports."
-    },
-    {
-      "name": "scribe",
-      "path": "agents/scribe.md",
-      "model": "haiku",
-      "description": "Documentation, changelogs, decision records. Append-only for logs."
-    },
-    {
-      "name": "brand-analyst",
-      "path": "agents/brand-analyst.md",
-      "model": "sonnet",
-      "description": "Audits how AI models perceive and recommend this product. Probes AI APIs, scores visibility, detects misinformation, maps competitor displacement."
-    }
-  ],
-  "hooks": [
-    {
-      "event": "Stop",
-      "script": "hooks/stop-loop-guard.sh",
-      "description": "Detects Ralph Loops — agents spinning on the same error 3+ times"
-    },
-    {
-      "event": "TaskCompleted",
-      "script": "hooks/task-completed.sh",
-      "description": "Blocks task completion if tests, types, or lint fail"
-    },
-    {
-      "event": "TeammateIdle",
-      "script": "hooks/teammate-idle.sh",
-      "description": "Prevents idle if uncommitted changes exist"
-    },
-    {
-      "event": "PostToolUse",
-      "filter": "Write|Edit",
-      "script": "hooks/post-edit-verify.sh",
-      "description": "Type-checks .ts/.tsx/.js/.jsx after every edit to catch hallucinated imports"
-    },
-    {
-      "event": "PreToolUse",
-      "filter": "Bash",
-      "script": "hooks/block-destructive.sh",
-      "description": "Blocks rm -rf, git push --force, DROP TABLE, and other destructive commands"
-    },
-    {
-      "event": "PostToolUse",
-      "filter": "Write|Edit",
-      "script": "hooks/brand-drift-check.sh",
-      "description": "Warns when edits to README.md, CLAUDE.md, or docs/ may contradict the AI visibility baseline"
-    }
-  ],
-  "skills": [
-    {
-      "name": "orchestration",
-      "path": "skills/orchestration/SKILL.md",
-      "description": "Model routing rules, task decomposition protocol, quality gates, anti-pattern detection, and error recovery procedures"
-    },
-    {
-      "name": "brand-visibility",
-      "path": "skills/brand-visibility/SKILL.md",
-      "description": "AI brand visibility auditing protocol — probe patterns, scoring rubric, gap detection, optimization blueprint patterns"
-    }
-  ],
-  "model_routing": {
-    "strategy": "cheapest-reliable",
-    "defaults": {
-      "architecture": "opus",
-      "implementation": "sonnet",
-      "validation": "haiku",
-      "documentation": "haiku"
-    },
-    "force_opus": [
-      "payment processing",
-      "authentication",
-      "encryption",
-      "compliance (GDPR, PCI-DSS, HIPAA)",
-      "multi-service refactors"
-    ]
-  },
-  "capabilities": {
-    "delegate_mode": true,
-    "parallel_execution": true,
-    "loop_detection": true,
-    "destructive_command_blocking": true,
-    "post_edit_type_checking": true,
-    "quality_gates": true,
-    "stdin_json_api": true,
-    "brand_visibility_audit": true,
-    "brand_drift_detection": true
-  }
+  "agents": "agents/",
+  "skills": "skills/",
+  "hooks": "hooks/hooks.json"
 }
