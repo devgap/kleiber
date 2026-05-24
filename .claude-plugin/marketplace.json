@@ -7,9 +7,9 @@
   "plugins": [
     {
       "name": "kleiber",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "source": ".",
-      "description": "Agent team orchestration with structured roles, model routing, quality gates, and loop prevention"
+      "description": "Harness engineering for Claude Code — agent team orchestration with model routing (Opus 4.7/Sonnet 4.6/Haiku 4.5), PRIOR FIRE WIN governance, quality gates, and loop prevention"
     }
   ]
 }

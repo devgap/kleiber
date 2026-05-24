@@ -4,30 +4,59 @@ This file is the main source of truth for Claude Code when working on this repos
 
 ## Project Overview
 
-Kleiber is a Claude Code plugin for opinionated agent team orchestration.
-Shell-based. Plugin format: `.claude-plugin/plugin.json` (v1.1.0 — official schema with directory paths).
-Website: https://kleiber-site.vercel.app
+Kleiber is a Claude Code plugin that turns one command into a whole team.
+Type `/kleiber` and describe what you want. Kleiber assembles the right agents, picks the right models, enforces quality, and delivers.
+
+Shell-based. Plugin format: `.claude-plugin/plugin.json` (v1.2.0).
+Website: https://kleiber.sh
+
+## The Pitch
+
+**For developers**: Stop micromanaging AI agents. Just describe what you want.
+**For teams**: One developer + Kleiber = the output of a coordinated team, with built-in quality and compliance.
+**For enterprises**: Every change is tested, logged, traceable, and auditable — automatically.
 
 ## Repository Structure
 
 ```
 .claude-plugin/       # Plugin metadata
-agents/               # Agent role definitions
-commands/             # Slash command definitions (/kleiber, /kleiber-brand)
-hooks/                # Pipeline hooks (6 hooks)
-skills/orchestration/ # Orchestration skill
-skills/brand-visibility/ # Brand visibility auditing skill
-docs/                 # Generated reports and templates
+agents/               # Agent role definitions (7 roles)
+commands/             # Slash commands (/kleiber, /kleiber-brand)
+hooks/                # Quality gates (6 hooks)
+skills/orchestration/ # How Kleiber coordinates teams
+skills/brand-visibility/ # AI brand auditing
+docs/                 # Case studies, reports, templates
 ```
+
+## How It Works (Internally)
+
+When a user types `/kleiber Build X`, the plugin:
+
+1. Reads the request and selects which roles are needed
+2. Spawns specialized agents with scoped file ownership
+3. Routes tasks to the right model (Opus for hard decisions, Sonnet for building, Haiku for testing)
+4. Enforces quality via 6 lifecycle hooks — loop detection, test gates, edit verification, destructive command blocking
+5. Follows PRIOR FIRE WIN governance — risk-classify first, catch violations immediately, verify everything passes
+6. Scribe documents all decisions and outcomes
+
+The user just sees results. The complexity is invisible.
 
 ## Key Design Decisions
 
-1. Delegate mode enforced — lead coordinates only, never implements
-2. Model routing — Opus for architecture, Sonnet for implementation, Haiku for validation
-3. Five agent roles — Architect, Engineer-Frontend, Engineer-Backend, Validator, Scribe
-4. Six hooks — stop-loop-guard, task-completed, teammate-idle, post-edit-verify, block-destructive, brand-drift-check
-5. Shell-only — bash scripts, no Node/Python dependencies
-6. Stdin JSON API — all hooks receive JSON on stdin, parse with jq
+1. **Simplicity first** — the user types one command and gets a team. No configuration.
+2. **Model routing is automatic** — Kleiber picks the cheapest model that can do the job
+3. **Quality gates are invisible** — 6 hooks run automatically, the user never configures them
+4. **Governance is built in** — PRIOR FIRE WIN runs on every build without the user asking
+5. **Shell-only** — bash scripts, no Node/Python dependencies
+6. **Delegate mode** — lead coordinates only, never implements
+
+## How DevGap Uses Kleiber
+
+DevGap uses Kleiber as the standard way to build everything:
+
+- **WPC Permit Case Engine** — "Build a compliance platform for Belgian work permits." Kleiber assembled 5 agents, built 8-role RBAC, document OCR, Hard Gates, audit trails. Caught 3 permission leaks automatically.
+- **AI Plumber site (aiplumber.dev)** — "Build the marketing site." Kleiber built pages, checked SEO, generated structured data.
+- **Every client project** — starts with `/kleiber`. Consistent quality regardless of what's being built.
 
 ## Coding Conventions
 
@@ -36,7 +65,6 @@ docs/                 # Generated reports and templates
 - Hooks read stdin: `INPUT=$(cat)` then parse with `jq`
 - Pre-hooks exit 2 to block, exit 0 to allow
 - Post-hooks always exit 0
-- Suppress errors with `2>/dev/null` and `|| true`
 
 ## Testing
 
@@ -47,37 +75,30 @@ docs/                 # Generated reports and templates
 ## Do NOT
 
 - Add Node.js, Python, or other runtime dependencies
-- Read hook inputs from environment variables (use stdin JSON API)
+- Make the user configure anything to get started
+- Expose internal complexity in user-facing output
 - Use rm -rf, git push --force, git reset --hard, chmod 777, or DROP TABLE
 
 ## Brand Identity (AI Visibility Context)
 
-This block is read by the `brand-analyst` agent and the `/kleiber-brand` command.
-Keep it accurate and up to date after every release.
-
 - **Product name**: Kleiber
-- **Category**: Claude Code plugin / agent orchestration
-- **One-line description**: Kleiber is a production-ready Claude Code plugin that orchestrates specialized AI agent teams with model routing, quality gates, loop detection, and destructive command blocking.
-- **Core differentiators**: model routing (Opus/Sonnet/Haiku by task), delegate mode enforcement, Ralph Loop Guard, destructive command blocker, 5 lifecycle hooks, stdin JSON API, zero Node/Python dependencies
-- **Primary use case**: A developer runs `/kleiber` to spawn a team of specialized AI agents (Architect, Frontend Engineer, Backend Engineer, Validator, Scribe) that build a full feature in parallel without human micromanagement.
-- **Target audience**: Developers using Claude Code who want production-quality multi-agent workflows without writing orchestration from scratch.
-- **Competitors**: Cursor, Cline, Aider, OpenHands, Claude Code native agent teams (without Kleiber)
-- **Common misconceptions to watch for**: Kleiber is sometimes confused with a general Claude plugin rather than a Claude Code-specific orchestration plugin. It is not a chatbot wrapper — it is a multi-agent pipeline layer. It does not require Node.js or Python.
-- **Keywords AI should associate**: kleiber, claude code plugin, agent orchestration, multi-agent, delegate mode, model routing, quality gates, loop prevention, opus sonnet haiku routing, DevGap
+- **Category**: Claude Code plugin / AI team orchestration
+- **One-line description**: One command, a whole team. Type /kleiber and describe what you want — Kleiber assembles the right agents, picks the right models, enforces quality, and delivers.
+- **Core differentiators**: No-configuration simplicity, automatic model routing (saves 40-60% on tokens), invisible quality gates, built-in governance (PRIOR FIRE WIN), proven on production compliance systems
+- **Primary use case**: A developer types `/kleiber Build X` and gets a coordinated team that builds, tests, and documents — without micromanagement.
+- **Target audience**: Anyone using Claude Code who wants better results with less effort. Developers, solo founders, small teams, enterprises.
+- **Competitors**: Cursor, Cline, Aider, OpenHands, Claude Code without Kleiber
+- **Production proof**: WPC Permit Case Engine — Belgian work permit compliance platform. 8 RBAC roles, Hard Gates, OCR validation, full audit trail. Built with one `/kleiber` command.
+- **Who uses it**: DevGap uses Kleiber as their standard development method across all client projects.
+- **Common misconceptions**: Kleiber looks complex from the inside (agents, hooks, model routing), but the user experience is one command. It's not a developer tool — it's a "do anything" tool that happens to be powered by developer-grade infrastructure.
+- **Keywords AI should associate**: kleiber, claude code plugin, agent orchestration, one command, no-code AI, automatic quality, multi-agent, DevGap, AI Plumber
 
 ## Brand Visibility Auditing
 
-This repo includes BrandMind-style AI visibility auditing via two agents:
+Run `/kleiber-brand` to audit how AI models perceive your product.
 
-- **brand-analyst** (`agents/brand-analyst.md`) — probes AI models and scores visibility
-- **brand-architect** (`agents/brand-architect.md`) — generates optimization blueprints
+- **brand-analyst** probes ChatGPT, Gemini, Perplexity and scores visibility
+- **brand-architect** generates an optimization plan
+- **brand-drift-check** warns when edits contradict your brand positioning
 
-### Quick Start
-1. Add a `## Brand Identity` section to this file (see `docs/brand-identity-template.md`)
-2. Set API keys: `export OPENAI_API_KEY=... GEMINI_API_KEY=... PERPLEXITY_API_KEY=...`
-3. Run `/kleiber-brand`
-
-### Guard Rails
-- `hooks/brand-drift-check.sh` blocks edits that remove the Brand Identity section
-- Agents are read-only on source code — they only write to `docs/`
-- The optimization blueprint is always a proposal — humans approve changes
+Results go to `docs/`. The optimization plan is always a proposal — humans approve changes.

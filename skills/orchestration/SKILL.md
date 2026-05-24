@@ -55,8 +55,8 @@ Spawn teammates with these roles. Match model to role. Only spawn what the task 
 
 | Model | Cost (Input/Output per M) | Use For |
 |-------|---------------------------|---------|
-| Opus 4.6 | $5 / $25 | Architecture, security, compliance, complex refactors |
-| Sonnet 4.5 | $3 / $15 | Feature implementation, APIs, UI components (default) |
+| Opus 4.7 | $5 / $25 | Architecture, security, compliance, complex refactors |
+| Sonnet 4.6 | $3 / $15 | Feature implementation, APIs, UI components (default) |
 | Haiku 4.5 | $1 / $5 | Validation, docs, boilerplate, mechanical tasks |
 
 ### Force Opus + Require Plan Approval
@@ -122,6 +122,36 @@ Spawn 3 reviewers (security, performance, test coverage) → Each reviews indepe
 ```
 Architect designs (require plan approval) → Lead reviews and approves → Spawn implementation teammates per module → Validator runs continuous verification → Scribe maintains decision log
 ```
+
+## PRIOR FIRE WIN — Governance Loop
+
+Every build must follow the PRIOR FIRE WIN loop. This is not optional.
+
+### PRIOR (Before Development)
+Before any agent writes code, the Architect must:
+1. Risk-classify every component (EU AI Act tier if applicable)
+2. Map data categories per GDPR requirements
+3. Define security boundaries and RBAC scope
+4. Validate architecture against regulatory constraints
+5. Document decisions in ADRs
+
+### FIRE (During Development)
+When the Validator catches a violation:
+1. **Suspend** — execution stops immediately
+2. **Preserve** — evidence captured (error, context, before/after state)
+3. **Route** — violation sent to Architect for review
+4. **Fix** — root cause addressed at the architecture level, not patched at the UI level
+
+FIRE events are not bugs — they are the system working correctly.
+
+### WIN (After Verification)
+All quality gates pass:
+- Tests pass (Validator confirmed)
+- Type checks clean
+- RBAC boundaries verified
+- Audit trail complete
+- Every component attributable, auditable, reversible
+- Scribe documents the evidence chain
 
 ## Anti-Patterns to Avoid
 

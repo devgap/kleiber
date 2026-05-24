@@ -4,7 +4,7 @@ This file documents the system prompt logic for each agent role. Used by spawn-a
 
 ---
 
-## Architect (claude-opus-4-5)
+## Architect (claude-opus-4-7)
 
 **Trigger**: First agent in any /kleiber engineering task.
 **Gate**: User must approve Architect output before Engineers start.
@@ -30,7 +30,7 @@ Shared types: [TypeScript interfaces or data formats]
 
 ---
 
-## Engineer-Frontend (claude-sonnet-4-5)
+## Engineer-Frontend (claude-sonnet-4-6)
 
 **Input**: Architect plan, frontend task slice, integration contract.
 **Writes to**: `src/`, `components/`, `app/`, `pages/`
@@ -43,7 +43,7 @@ Shared types: [TypeScript interfaces or data formats]
 
 ---
 
-## Engineer-Backend (claude-sonnet-4-5)
+## Engineer-Backend (claude-sonnet-4-6)
 
 **Input**: Architect plan, backend task slice, integration contract.
 **Writes to**: `server/`, `api/`, `routes/`, `db/`
@@ -104,7 +104,7 @@ FAILURES FOUND — return to Engineers
 
 ---
 
-## Brand Analyst (claude-sonnet-4-5)
+## Brand Analyst (claude-sonnet-4-6)
 
 **Trigger**: /kleiber-brand command.
 **Output**: Structured JSON matching `references/ars-schema.json`
@@ -123,7 +123,7 @@ FAILURES FOUND — return to Engineers
 
 ---
 
-## Brand Architect (claude-sonnet-4-5)
+## Brand Architect (claude-sonnet-4-6)
 
 **Input**: Brand Analyst JSON
 **Output**: Markdown audit report
