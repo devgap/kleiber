@@ -117,6 +117,18 @@ Kleiber also includes AI brand auditing. Run `/kleiber-brand` to find out how Ch
 /kleiber-brand --competitors "Cursor, Cline, Aider"
 ```
 
+## Learn While You Build
+
+Every Kleiber build is hands-on practice for the **Claude Certified Architect (CCA)** exam. Spawn the coach with the `--learn` flag:
+
+```
+/kleiber --learn Build payment processing with Stripe
+```
+
+The CCA Coach watches the team, annotates each architectural decision with the CCA domain it practices (Agentic Architecture, Tool Design, Claude Code Config, Structured Output, Reliability), and flags exam-style anti-patterns before they ship. Read-only, silent by default.
+
+See [docs/claude-certification.md](docs/claude-certification.md) for the full Kleiber → CCA domain mapping, anti-patterns reference, and study path.
+
 ## Requirements
 
 - Claude Code

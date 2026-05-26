@@ -27,6 +27,8 @@ The user wants to create an agent team using the Kleiber orchestration method.
 
 6. **Enforce quality gates**: Have Validator verify each completed task. Have Scribe document decisions and progress.
 
+7. **Optional learn mode (`--learn` flag)**: If the user invokes `/kleiber --learn ...`, additionally spawn `cca-coach` (Haiku) alongside the team. The coach is read-only and silent by default — it only surfaces when a teammate makes a meaningful architectural decision (annotating which Claude Certified Architect domain it practices) or reaches for a known exam anti-pattern. At end of session, the coach prints a domain-coverage recap. See `docs/claude-certification.md` for the full Kleiber → CCA mapping.
+
 ## Example Usage
 
 User says: `/kleiber Build user authentication with login, signup, and password reset`
@@ -37,3 +39,10 @@ You should:
 - Spawn Validator (haiku) for continuous verification
 - Spawn Scribe (haiku) for documentation
 - Use delegate mode throughout
+
+User says: `/kleiber --learn Build payment processing with Stripe`
+
+Same as above, plus:
+- Spawn `cca-coach` (haiku) at session start as a read-only observer
+- The coach annotates each architectural decision with its CCA domain and flags anti-patterns
+- At session end, the coach prints a recap of domains practiced and study gaps
