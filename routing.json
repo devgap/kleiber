@@ -1,0 +1,36 @@
+{
+  "$comment": "CANONICAL model x effort routing for Kleiber. Both the Go supervisor (loop.go) and the Claude Code plugin read THIS file. Do not restate the table elsewhere — link here. Only models present here are valid; reject any unknown/hallucinated model id as an error.",
+  "version": 1,
+  "tiers": {
+    "hardest": { "model": "claude-fable-5", "label": "Fable 5", "cost_per_m": { "in": 10, "out": 50 }, "use_for": "security/compliance/payment architecture, gnarly multi-service decisions", "requires_plan_approval": true },
+    "hard":    { "model": "claude-opus-4-8", "label": "Opus 4.8", "cost_per_m": { "in": 5, "out": 25 }, "use_for": "architect role, complex refactors, hard reasoning" },
+    "build":   { "model": "claude-sonnet-4-6", "label": "Sonnet 4.6", "cost_per_m": { "in": 3, "out": 15 }, "use_for": "frontend/backend engineers (default worker)" },
+    "grunt":   { "model": "claude-haiku-4-5", "label": "Haiku 4.5", "cost_per_m": { "in": 1, "out": 5 }, "use_for": "validation, docs, boilerplate, mechanical tasks" }
+  },
+  "effort": {
+    "supported_on": ["claude-fable-5", "claude-opus-4-8", "claude-opus-4-6", "claude-sonnet-4-6"],
+    "unsupported_on": ["claude-haiku-4-5"],
+    "levels": {
+      "max":    "correctness-critical: compliance/security/payment arch (pair with hardest/hard + plan approval)",
+      "xhigh":  "coding & agentic builds (Opus 4.8) — best quality/efficiency point",
+      "high":   "default for intelligence-sensitive work",
+      "medium": "cost-sensitive builds",
+      "low":    "subagents, validation, mechanical tasks (pairs with Haiku 4.5)"
+    },
+    "default": "high"
+  },
+  "role_defaults": {
+    "architect": { "tier": "hard", "effort": "xhigh" },
+    "engineer-frontend": { "tier": "build", "effort": "high" },
+    "engineer-backend": { "tier": "build", "effort": "high" },
+    "validator": { "tier": "grunt", "effort": "low" },
+    "scribe": { "tier": "grunt", "effort": "low" }
+  },
+  "force_hardest_plus_plan_approval": [
+    "payment processing logic",
+    "authentication/authorization changes",
+    "data encryption",
+    "GDPR/PCI-DSS/HIPAA compliance code",
+    "multi-service refactors"
+  ]
+}
