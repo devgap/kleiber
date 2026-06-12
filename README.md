@@ -27,7 +27,7 @@ You just describe what you want in plain English. Kleiber does the rest.
 ## Install
 
 ```bash
-/plugin marketplace add Devgapperk/kleiber
+/plugin marketplace add devgap/kleiber
 /plugin install kleiber@kleiber-marketplace
 ```
 
@@ -147,7 +147,8 @@ Kleiber routes work to save money automatically:
 
 | Task type | Model used | Cost per M tokens |
 |-----------|-----------|-------------------|
-| Architecture & security | Opus 4.7 | $5 in / $25 out |
+| Hardest (security / compliance / payments architecture) | Fable 5 | $10 in / $50 out |
+| Architecture & high reasoning | Opus 4.8 | $5 in / $25 out |
 | Feature building | Sonnet 4.6 | $3 in / $15 out |
 | Testing & docs | Haiku 4.5 | $1 in / $5 out |
 
