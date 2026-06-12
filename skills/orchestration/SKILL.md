@@ -55,9 +55,22 @@ Spawn teammates with these roles. Match model to role. Only spawn what the task 
 
 | Model | Cost (Input/Output per M) | Use For |
 |-------|---------------------------|---------|
-| Opus 4.7 | $5 / $25 | Architecture, security, compliance, complex refactors |
+| Fable 5 | $10 / $50 | Hardest calls: security/compliance/payment architecture, gnarly multi-service decisions (require plan approval) |
+| Opus 4.8 | $5 / $25 | Architecture, complex refactors, hard reasoning |
 | Sonnet 4.6 | $3 / $15 | Feature implementation, APIs, UI components (default) |
 | Haiku 4.5 | $1 / $5 | Validation, docs, boilerplate, mechanical tasks |
+
+### Effort — the second routing axis
+
+Routing is **model × effort**, not model alone. Set `output_config.effort` to trade latency/cost for intelligence. Supported on Fable 5 / Opus 4.6+ / Sonnet 4.6; errors on Haiku 4.5 and older Sonnets.
+
+| Effort | Use for |
+|--------|---------|
+| `max` | Correctness-critical: compliance / security / payment architecture (pair with Fable 5 or Opus 4.8 + plan approval) |
+| `xhigh` | Coding & agentic builds (Opus 4.8) — best quality/efficiency point |
+| `high` | Default for intelligence-sensitive work |
+| `medium` | Cost-sensitive builds |
+| `low` | Subagents, validation, mechanical tasks (pairs with Haiku 4.5) |
 
 ### Force Opus + Require Plan Approval
 - Payment processing logic

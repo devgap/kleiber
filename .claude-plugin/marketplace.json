@@ -9,7 +9,7 @@
       "name": "kleiber",
       "version": "1.2.0",
       "source": ".",
-      "description": "Harness engineering for Claude Code — agent team orchestration with model routing (Opus 4.7/Sonnet 4.6/Haiku 4.5), PRIOR FIRE WIN governance, quality gates, and loop prevention"
+      "description": "Harness engineering for Claude Code — agent team orchestration with model routing (Fable 5/Opus 4.8/Sonnet 4.6/Haiku 4.5), PRIOR FIRE WIN governance, quality gates, and loop prevention"
     }
   ]
 }
