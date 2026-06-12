@@ -4,7 +4,7 @@ This file documents the system prompt logic for each agent role. Used by spawn-a
 
 ---
 
-## Architect (claude-opus-4-7)
+## Architect (claude-opus-4-8)
 
 **Trigger**: First agent in any /kleiber engineering task.
 **Gate**: User must approve Architect output before Engineers start.

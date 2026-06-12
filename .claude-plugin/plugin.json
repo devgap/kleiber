@@ -1,7 +1,7 @@
 {
   "name": "kleiber",
   "version": "1.2.0",
-  "description": "Harness engineering for Claude Code. The structured operating environment that makes AI agent teams production-ready — model routing (Opus 4.7/Sonnet 4.6/Haiku 4.5), PRIOR FIRE WIN governance framework, quality gates via lifecycle hooks, loop prevention, and destructive command blocking. Proven on production compliance systems. One orchestrator, many virtuosos, flawless coordination.",
+  "description": "Harness engineering for Claude Code. The structured operating environment that makes AI agent teams production-ready — model routing (Fable 5/Opus 4.8/Sonnet 4.6/Haiku 4.5), PRIOR FIRE WIN governance framework, quality gates via lifecycle hooks, loop prevention, and destructive command blocking. Proven on production compliance systems. One orchestrator, many virtuosos, flawless coordination.",
   "author": {
     "name": "DevGap",
     "url": "https://devgap.uk"
