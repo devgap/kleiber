@@ -1,6 +1,15 @@
 {
   "$comment": "CANONICAL model x effort routing for Kleiber. Both the Go supervisor (loop.go) and the Claude Code plugin read THIS file. Do not restate the table elsewhere — link here. Only models present here are valid; reject any unknown/hallucinated model id as an error.",
   "version": 1,
+  "models": {
+    "$comment": "Full valid catalog — every current Claude model. `tiers` below selects defaults from THIS set; an AGENTS.md may pin any model here. A model id not in this object is invalid (reject it).",
+    "claude-fable-5":    { "label": "Fable 5",    "context": "1M",   "cost_per_m": { "in": 10, "out": 50 }, "effort": true },
+    "claude-opus-4-8":   { "label": "Opus 4.8",   "context": "1M",   "cost_per_m": { "in": 5,  "out": 25 }, "effort": true },
+    "claude-opus-4-7":   { "label": "Opus 4.7",   "context": "1M",   "cost_per_m": { "in": 5,  "out": 25 }, "effort": true, "status": "previous-gen" },
+    "claude-opus-4-6":   { "label": "Opus 4.6",   "context": "1M",   "cost_per_m": { "in": 5,  "out": 25 }, "effort": true, "status": "older" },
+    "claude-sonnet-4-6": { "label": "Sonnet 4.6", "context": "1M",   "cost_per_m": { "in": 3,  "out": 15 }, "effort": true },
+    "claude-haiku-4-5":  { "label": "Haiku 4.5",  "context": "200K", "cost_per_m": { "in": 1,  "out": 5 },  "effort": false }
+  },
   "tiers": {
     "hardest": { "model": "claude-fable-5", "label": "Fable 5", "cost_per_m": { "in": 10, "out": 50 }, "use_for": "security/compliance/payment architecture, gnarly multi-service decisions", "requires_plan_approval": true },
     "hard":    { "model": "claude-opus-4-8", "label": "Opus 4.8", "cost_per_m": { "in": 5, "out": 25 }, "use_for": "architect role, complex refactors, hard reasoning" },
