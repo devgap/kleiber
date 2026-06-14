@@ -1,69 +1,30 @@
 {
   "hooks": {
+    "SessionStart": [
+      { "matcher": "", "hooks": [ { "type": "command", "command": "./hooks/context-init.sh", "timeout": 10000 } ] }
+    ],
     "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/stop-loop-guard.sh",
-            "timeout": 10000
-          }
-        ]
-      }
+      { "matcher": "", "hooks": [ { "type": "command", "command": "./hooks/stop-loop-guard.sh", "timeout": 10000 } ] }
     ],
     "TaskCompleted": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/task-completed.sh",
-            "timeout": 30000
-          }
-        ]
-      }
+      { "matcher": "", "hooks": [ { "type": "command", "command": "./hooks/task-completed.sh", "timeout": 30000 } ] }
     ],
     "TeammateIdle": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/teammate-idle.sh",
-            "timeout": 10000
-          }
-        ]
-      }
+      { "matcher": "", "hooks": [ { "type": "command", "command": "./hooks/teammate-idle.sh", "timeout": 10000 } ] }
     ],
     "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/post-edit-verify.sh",
-            "timeout": 15000
-          },
-          {
-            "type": "command",
-            "command": "./hooks/brand-drift-check.sh",
-            "timeout": 10000
-          }
-        ]
-      }
+      { "matcher": "Write|Edit", "hooks": [
+        { "type": "command", "command": "./hooks/post-edit-verify.sh", "timeout": 15000 },
+        { "type": "command", "command": "./hooks/brand-drift-check.sh", "timeout": 10000 }
+      ] },
+      { "matcher": "Bash|Edit|Write", "hooks": [
+        { "type": "command", "command": "./hooks/loop-state.sh", "timeout": 5000 },
+        { "type": "command", "command": "./hooks/soft-token-cap.sh", "timeout": 5000 }
+      ] }
     ],
     "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/block-destructive.sh",
-            "timeout": 5000
-          }
-        ]
-      }
+      { "matcher": "Bash", "hooks": [ { "type": "command", "command": "./hooks/block-destructive.sh", "timeout": 5000 } ] },
+      { "matcher": "Task", "hooks": [ { "type": "command", "command": "./hooks/routing-reminder.sh", "timeout": 5000 } ] }
     ]
   }
 }
