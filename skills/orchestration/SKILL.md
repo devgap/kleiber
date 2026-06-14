@@ -72,6 +72,9 @@ Routing is **model × effort**, not model alone. Set `output_config.effort` to t
 | `medium` | Cost-sensitive builds |
 | `low` | Subagents, validation, mechanical tasks (pairs with Haiku 4.5) |
 
+### Canonical source
+At teammate spawn, read `routing.json` (the single source of truth) and overlay the active venture's `AGENTS.md` routing overrides to choose **model × effort**. Do not hardcode model ids in spawn prompts — resolve them from `routing.json`. An id absent from `routing.json` is invalid.
+
 ### Force Opus + Require Plan Approval
 - Payment processing logic
 - Authentication/authorization changes
