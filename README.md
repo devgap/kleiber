@@ -157,3 +157,42 @@ Most builds use Sonnet + Haiku for 80% of the work. You don't choose — Kleiber
 ---
 
 Built by [DevGap](https://devgap.uk). Part of the [AI Plumber](https://aiplumber.dev) framework by Koen Van Lysebetten.
+
+
+## Building Kleiber as a Second Brain OS
+
+Kleiber ships as a build harness, but the same machinery makes a capable personal "second brain" — a system that captures what you know, keeps it structured, and acts on it. Treat the second brain as a product Kleiber builds and maintains for you. There are two layers: the **harness** (how work runs) and the **content model** (how knowledge is shaped). Get both right and the rest is just commands.
+
+### Layer 1: Harness Engineering
+
+The harness is the runtime — the part that turns "I want to remember and act on things" into a reliable, repeatable loop. Borrow Kleiber's own orchestration patterns:
+
+- **One entry point.** Everything enters through `/kleiber`. Capture, retrieval, synthesis, and review are all the same verb: describe what you want, let the harness decide the roles.
+- **Role specialisation.** Define a small standing team: a *Capturer* that normalises raw input into notes, a *Librarian* that files and links them, a *Synthesiser* that writes summaries and surfaces connections, and a *Reviewer* that checks for stale or contradictory entries.
+- **Model routing by cost.** Cheap models handle tagging, dedup, and filing. Mid models handle synthesis and linking. Expensive models are reserved for hard judgement calls — resolving conflicts, deciding what to forget. The same routing table Kleiber uses for builds applies here.
+- **Quality gates.** Every write to the brain is validated before it lands: schema-checked, deduplicated against existing notes, and linked to at least one existing node. Nothing enters unstructured.
+- **Idempotent capture.** Re-running a capture never creates duplicates. The harness keys notes by a stable content hash so the same thought captured twice merges instead of forking.
+- **Audit log.** Every decision — what was filed where, what was merged, what was forgotten — is logged automatically, the same way Kleiber logs build decisions.
+
+A minimal harness loop looks like:
+
+```
+/kleiber capture "Met Dana from Acme — they need SOC2 by Q3, decision-maker is their CTO"
+```
+
+The Capturer normalises it, the Librarian files it under People and Accounts, the Synthesiser links it to the existing Acme thread, and the Reviewer flags that an earlier note named a different decision-maker — surfacing the contradiction for you to resolve.
+
+### Layer 2: Content Modelling
+
+The harness is only as good as the shape of the knowledge it moves. Content modelling is the discipline of defining that shape up front so retrieval and synthesis stay reliable as the brain grows.
+
+- **Typed nodes, not free text.** Define a small set of node types — Note, Person, Project, Decision, Source, Task — each with a required schema. A Decision always has a date, a rationale, and links to the alternatives considered. Typing is what lets cheap models file accurately.
+- **Edges are first-class.** Relationships (`mentions`, `blocks`, `supersedes`, `derived-from`) carry as much meaning as nodes. The Reviewer uses `supersedes` edges to retire stale facts without deleting history.
+- **Atomic notes.** One idea per node. Atomicity makes linking precise and lets the Synthesiser recombine ideas without dragging in irrelevant context.
+- **Progressive summarisation.** Each node carries layered summaries — a one-line gist, a paragraph, and the raw source. The harness routes retrieval to the cheapest layer that answers the question, only loading raw content when needed.
+- **Provenance on everything.** Every fact links back to its Source node with a timestamp. When two notes conflict, provenance is how the Reviewer decides which wins.
+- **Forgetting is a feature.** Model a confidence and recency score per node. Low-confidence, low-recency nodes are archived (never hard-deleted) so the active graph stays small and the expensive models stay focused.
+
+### Putting It Together
+
+Define the content model first (the schemas and edge types), then point Kleiber's harness at it. The harness enforces the model on every write, routes work to the right model by cost, and keeps an audit trail — so your second brain stays structured, cheap to run, and trustworthy as it scales. Start with three node types and one capture command, then grow the schema as real usage reveals what you actually need to model.
